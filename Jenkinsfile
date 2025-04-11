@@ -31,12 +31,12 @@ pipeline {
       steps {
         script {
           sh """
-            echo "Image Inspect:" > ${INSPECT_FILE}  
-            def imageInspect = sh(script: "docker inspect ${IMAGE_NAME}:${TAG} | jq '.[0] | {Id, Created}' >> ${INSPECT_FILE}
-
+            echo "Image Inspect:" > ${INSPECT_FILE}
+            docker inspect ${IMAGE_NAME}:${TAG} | jq '.[0] | {Id, Created}' >> ${INSPECT_FILE}
+            
             echo "\\nContainer Info:" >> ${INSPECT_FILE}
-            def containerInspect = sh(script: "docker inspect ${CONTAINER_NAME} | jq '.[0] | {Id, Created}' >> ${INSPECT_FILE}
-        """
+            docker inspect ${CONTAINER_NAME} | jq '.[0] | {Id, Created}' >> ${INSPECT_FILE}
+          """
         }
       }
     }
