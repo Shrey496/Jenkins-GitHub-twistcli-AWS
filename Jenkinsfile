@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     IMAGE_NAME = 'nginx'
-    TAG = 'latest'
+    TAG = 'custom'
     CONTAINER_NAME = 'nginx-webserver'
     INSPECT_FILE = 'dockerinspect.txt'
   }
