@@ -2,9 +2,9 @@ pipeline {
   agent { label 'ec2-docker' }
 
   environment {
-    IMAGE_NAME = 'nginx'
+    IMAGE_NAME = 'redis'
     TAG = 'custom'
-    CONTAINER_NAME = 'nginx-webserver'
+    CONTAINER_NAME = 'redis-container'
     INSPECT_FILE = 'dockerinspect.txt'
     TWISTCLI_URL = 'https://us-east1.cloud.twistlock.com/us-2-158290582/api/v1/util/twistcli'
     PRISMA_CONSOLE = 'https://us-east1.cloud.twistlock.com/us-2-158290582'
