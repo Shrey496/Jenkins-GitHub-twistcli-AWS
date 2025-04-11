@@ -6,6 +6,10 @@ pipeline {
     TAG = 'custom'
     CONTAINER_NAME = 'nginx-webserver'
     INSPECT_FILE = 'dockerinspect.txt'
+    TWISTCLI_URL = 'https://us-east1.cloud.twistlock.com/us-2-158290582/api/v1/util/twistcli'
+    PRISMA_CONSOLE = 'https://us-east1.cloud.twistlock.com/us-2-158290582'
+    PRISMA_USERNAME = credentials('Prisma-access-secret-username')
+    PRISMA_PASSWORD = credentials('Prisma-access-secret-password')
   }
 
   stages {
@@ -40,7 +44,7 @@ pipeline {
             sh """
               ./twistcli --debug images scan --address https://${PRISMA_CONSOLE} \
                 --user $USERNAME --password $PASSWORD --details \
-                ${IMAGE_NAME}:${TAG}
+                ${IMAGE_NAME}:${TAG} > ${SCAN_FILE} || true
             """
           }
         }
@@ -77,7 +81,7 @@ pipeline {
         docker rm -f ${CONTAINER_NAME} || true
         docker rmi ${IMAGE_NAME}:${TAG} || true
       """
-      archiveArtifacts artifacts: INSPECT_FILE, onlyIfSuccessful: false
+      archiveArtifacts artifacts: "${SCAN_FILE},${INSPECT_FILE}", fingerprint: true
       echo 'Done.'
     }
   }
