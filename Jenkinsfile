@@ -20,10 +20,38 @@ pipeline {
         sh "docker build --no-cache -t ${IMAGE_NAME}:${TAG} ."
       }
     }
+    stage('Download twistcli') {
+      steps {
+        script {
+          withCredentials([usernamePassword(credentialsId: 'Prisma-access-secret', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+            sh """
+              curl -u "$USERNAME:$PASSWORD" -o twistcli --silent --insecure ${TWISTCLI_URL}
+              chmod +x twistcli
+            """
+          }
+        }
+      }
+    }
+
+    stage('Scan Docker Image using twistcli') {
+      steps {
+        script {
+          withCredentials([usernamePassword(credentialsId: 'Prisma-access-secret', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+            sh """
+              ./twistcli --debug images scan --address https://${PRISMA_CONSOLE} \
+                --user $USERNAME --password $PASSWORD --details \
+                ${IMAGE_NAME}:${TAG}
+            """
+          }
+        }
+      }
+    }
 
     stage('Run Container') {
       steps {
-        sh "docker run -d -p 8080:80 --name ${CONTAINER_NAME} ${IMAGE_NAME}:${TAG}"
+        script{
+          sh "docker run -d --name ${CONTAINER_NAME} ${IMAGE_NAME}:${TAG}"
+        }
       }
     }
 
