@@ -30,15 +30,13 @@ pipeline {
     stage('Inspect Image and Container') {
       steps {
         script {
-          def imageInspect = sh(script: "docker inspect ${IMAGE_NAME}:${TAG} | jq '.[0] | {Id, Created", returnStdout: true).trim()
-          def containerInspect = sh(script: "docker inspect ${CONTAINER_NAME} | jq '.[0] | {Id, Created", returnStdout: true).trim()
-          writeFile file: INSPECT_FILE, text: """\
-========== Image Inspect ==========
-${imageInspect}
+          sh """
+            echo "Image Inspect:" > ${INSPECT_FILE}  
+            def imageInspect = sh(script: "docker inspect ${IMAGE_NAME}:${TAG} | jq '.[0] | {Id, Created}' >> ${INSPECT_FILE}
 
-========== Container Inspect ==========
-${containerInspect}
-"""
+            echo "\\nContainer Info:" >> ${INSPECT_FILE}
+            def containerInspect = sh(script: "docker inspect ${CONTAINER_NAME} | jq '.[0] | {Id, Created}' >> ${INSPECT_FILE}
+        """
         }
       }
     }
