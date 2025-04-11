@@ -6,6 +6,7 @@ pipeline {
     TAG = 'custom'
     CONTAINER_NAME = 'redis-container'
     INSPECT_FILE = 'dockerinspect.txt'
+    SCAN_FILE = 'twistcli-scan-report.txt'
     TWISTCLI_URL = 'https://us-east1.cloud.twistlock.com/us-2-158290582/api/v1/util/twistcli'
     PRISMA_CONSOLE = 'https://us-east1.cloud.twistlock.com/us-2-158290582'
     PRISMA_USERNAME = credentials('Prisma-access-secret-username')
