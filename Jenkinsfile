@@ -81,10 +81,8 @@ pipeline {
       node ('ec2-docker') {
         script {
           echo 'Cleaning up Docker container and image...'
-          sh """
-            docker rm -f ${env.CONTAINER_NAME} || true
-            docker rmi ${env.IMAGE_NAME}:${env.TAG} || true
-          """
+          sh "docker rm -f ${env.CONTAINER_NAME} || true"
+          sh "docker rmi ${env.IMAGE_NAME}:${env.TAG} || true"
           archiveArtifacts artifacts: "${env.SCAN_FILE}, ${env.INSPECT_FILE}", fingerprint: true
         }
       }
