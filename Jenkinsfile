@@ -9,8 +9,6 @@ pipeline {
     SCAN_FILE = 'twistcli-scan-report.txt'
     TWISTCLI_URL = 'https://us-east1.cloud.twistlock.com/us-2-158290582/api/v1/util/twistcli'
     PRISMA_CONSOLE = 'https://us-east1.cloud.twistlock.com/us-2-158290582'
-    PRISMA_USERNAME = credentials('Prisma-access-secret-username')
-    PRISMA_PASSWORD = credentials('Prisma-access-secret-password')
   }
 
   stages {
