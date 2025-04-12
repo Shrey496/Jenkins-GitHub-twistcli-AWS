@@ -82,10 +82,10 @@ pipeline {
         script {
           echo 'Cleaning up Docker container and image...'
           sh """
-            docker rm -f ${CONTAINER_NAME} || true
-            docker rmi ${IMAGE_NAME}:${TAG} || true
+            docker rm -f ${env.CONTAINER_NAME} || true
+            docker rmi ${env.IMAGE_NAME}:${env.TAG} || true
           """
-          archiveArtifacts artifacts: "${SCAN_FILE}, ${INSPECT_FILE}", fingerprint: true
+          archiveArtifacts artifacts: "${env.SCAN_FILE}, ${env.INSPECT_FILE}", fingerprint: true
         }
       }
     }
