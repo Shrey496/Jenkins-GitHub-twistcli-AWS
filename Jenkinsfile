@@ -78,7 +78,7 @@ pipeline {
   
   post {
     always {
-      node {
+      node ('ec2-docker') {
         script {
           echo 'Cleaning up Docker container and image...'
           sh """
