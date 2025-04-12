@@ -75,8 +75,6 @@ pipeline {
 
   
   post {
-    always {
-      node ('ec2-docker') {
         script {
           echo 'Cleaning up Docker container and image...'
           sh "docker rm -f ${env.CONTAINER_NAME} || true"
@@ -84,6 +82,4 @@ pipeline {
           archiveArtifacts artifacts: "${env.SCAN_FILE}, ${env.INSPECT_FILE}", fingerprint: true
         }
       }
-    }
-  }
 }
