@@ -78,15 +78,16 @@ pipeline {
   
   post {
     always {
-      script {
-        // Clean up
-        sh """
-          docker rm -f ${CONTAINER_NAME} || true
-          docker rmi ${IMAGE_NAME}:${TAG} || true
-        """
+      node {
+        script {
+          echo 'Cleaning up Docker container and image...'
+          sh """
+            docker rm -f ${CONTAINER_NAME} || true
+            docker rmi ${IMAGE_NAME}:${TAG} || true
+          """
+          archiveArtifacts artifacts: "${SCAN_FILE}, ${INSPECT_FILE}", fingerprint: true
+        }
       }
-      echo "Done."
     }
   }
 }
-
