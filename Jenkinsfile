@@ -41,7 +41,7 @@ pipeline {
         script {
           withCredentials([usernamePassword(credentialsId: 'Prisma-access-secret', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
             sh """
-              ./twistcli --debug images scan --address https://${PRISMA_CONSOLE} \
+              ./twistcli --debug images scan --address ${PRISMA_CONSOLE} \
                 --user $USERNAME --password $PASSWORD --details \
                 ${IMAGE_NAME}:${TAG} > ${SCAN_FILE} || true
             """
